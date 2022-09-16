@@ -2,8 +2,6 @@ export const fetchTournaments = (query: string) =>
   fetch(`http://localhost:4000/tournaments?q=${query}`)
     .then((response) => response.json())
     .then((data) => {
-      const err: any = `somethink went wong`;
-      throw new Error(err);
       return data;
     })
     .catch((error) => {
@@ -11,7 +9,7 @@ export const fetchTournaments = (query: string) =>
     });
 
 export const createTournament = async (name: string) => {
-  await fetch('http://localhost:4000', {
+  await fetch('http://localhost:4000/tournaments', {
     method: 'POST', // or 'PUT'
     headers: {
       'Content-Type': 'application/json',
@@ -20,10 +18,10 @@ export const createTournament = async (name: string) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log('Success:', data);
+      return data;
     })
     .catch((error) => {
-      console.error('Error:', error);
+      return error;
     });
 };
 
@@ -34,14 +32,7 @@ export const editTournament = async (id: string, name: string) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ name: name }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+  }).catch((error) => error);
 };
 
 export const deleteTournament = async (id: string) => {
@@ -50,12 +41,5 @@ export const deleteTournament = async (id: string) => {
     headers: {
       'Content-Type': 'application/json',
     },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+  }).catch((error) => error);
 };

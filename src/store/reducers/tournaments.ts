@@ -11,10 +11,10 @@ const initialState = {
   data: [],
   loading: true,
   errorInSearch: false,
+  search: '',
 };
 
 const reducer = (state = initialState, action: any) => {
-  console.log(action, action.payload);
   switch (action.type) {
     case actionTypes.FETCH_TOURNAMENTS_START:
       return {
@@ -29,11 +29,30 @@ const reducer = (state = initialState, action: any) => {
         loading: false,
         errorInSearch: false,
       };
+    case actionTypes.UPDATE_TOURNAMENT:
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+        errorInSearch: false,
+      };
+    case actionTypes.DELETE_TOURNAMENT:
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+        errorInSearch: false,
+      };
     case actionTypes.FETCH_TOURNAMENTS_FAIL:
       return {
         ...state,
         data: null,
         errorInSearch: true,
+      };
+    case actionTypes.SET_SEARCH:
+      return {
+        ...state,
+        search: action.payload,
       };
     default:
       return {

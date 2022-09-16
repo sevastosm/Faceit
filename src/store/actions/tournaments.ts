@@ -1,4 +1,9 @@
-import { fetchTournaments } from '../api';
+import {
+  fetchTournaments,
+  createTournament,
+  deleteTournament,
+  editTournament,
+} from '../api';
 import { RootState } from '../reducers';
 import * as actionTypes from './actionTypes';
 import store from '..';
@@ -11,7 +16,13 @@ export const fetchTournamentsStart = () => {
 };
 
 export const fetchTournamentsSuccess = (data: any) => {
-  console.log('DATA', data);
+  return {
+    type: actionTypes.FETCH_TOURNAMENTS_SUCCESS,
+    payload: data.reverse(),
+  };
+};
+
+export const setTournamentsFromFallback = (data: any) => {
   return {
     type: actionTypes.FETCH_TOURNAMENTS_SUCCESS,
     payload: data,
@@ -25,17 +36,79 @@ export const fetchTournamentsFail = (error: string) => {
   };
 };
 
-export const getTournaments = (query: any) => {
+export const getTournaments = (query: string = '') => {
   return (dispatch: any) => {
     dispatch(fetchTournamentsStart());
     fetchTournaments(query)
       .then((response) => {
-        console.log('SUCCSESS RESPONSE', response);
         dispatch(fetchTournamentsSuccess(response));
       })
       .catch((error: any) => {
-        console.log('ERROR IS SHEARCH', error);
         dispatch(fetchTournamentsFail(error.response));
       });
+  };
+};
+
+export const newTournament = (name: string) => {
+  return (dispatch: any) => {
+    createTournament(name)
+      .then((response) => {
+        dispatch(getTournaments());
+      })
+      .catch((error: any) => {
+        dispatch(fetchTournamentsFail(error.response));
+      });
+  };
+};
+
+export const setSearch = (search: string) => {
+  return {
+    type: actionTypes.SET_SEARCH,
+    payload: search,
+  };
+};
+
+export const optmDeletetournament = (id: string) => {
+  const tournaments = store.getState().tournaments.data;
+
+  const f = tournaments.filter((d: any) => d.id !== id);
+  return {
+    type: actionTypes.DELETE_TOURNAMENT,
+    payload: f,
+  };
+};
+
+export const optmEditTournament = (id: string, name: string) => {
+  const tournaments = store.getState().tournaments.data;
+  const f = tournaments.map((d: any) => {
+    if (d.id === id) {
+      return { ...d, name: name };
+    }
+    return d;
+  });
+
+  return {
+    type: actionTypes.UPDATE_TOURNAMENT,
+    payload: f,
+  };
+};
+
+export const deleteTournamentAction = (id: string) => {
+  return async (dispatch: any) => {
+    const fallback: any = store.getState().tournaments.data;
+    dispatch(optmDeletetournament(id));
+    await deleteTournament(id).catch((error: any) => {
+      dispatch(setTournamentsFromFallback(fallback));
+    });
+  };
+};
+
+export const editTournamentAction = (id: string, name: string) => {
+  return async (dispatch: any) => {
+    const fallback: any = store.getState().tournaments.data;
+    dispatch(optmEditTournament(id, name));
+    await editTournament(id, name).catch((error: any) => {
+      dispatch(setTournamentsFromFallback(fallback));
+    });
   };
 };
