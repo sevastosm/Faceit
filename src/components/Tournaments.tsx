@@ -1,12 +1,16 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { getTournaments } from '../store/actions/tournaments';
 import { selectItems } from '../store/selectors/tournaments';
-import styled from 'styled-components';
-import theme from '../theme';
-import { Tournament as TTournament } from '../types';
+import {
+  ApplicationStore,
+  Tournament as typeTournament,
+  AppDispatch,
+} from '../types';
 import Tournament from './Tournament';
 import Button from './Button';
-import { getTournaments } from '../store/actions/tournaments';
+import theme from '../theme';
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   display: grid;
@@ -20,11 +24,18 @@ const NoResults = styled.div`
   text-align: center;
 `;
 
-const Tournaments = () => {
-  const dispatch: any = useDispatch();
+const Tournaments: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
   const items = useSelector(selectItems);
-  const isLoading = useSelector((store: any) => store.tournaments.loading);
-  const error = useSelector((store: any) => store.tournaments.errorInSearch);
+  const isLoading = useSelector(
+    (store: ApplicationStore) => store.tournaments.loading
+  );
+  const error = useSelector(
+    (store: ApplicationStore) => store.tournaments.errorInSearch
+  );
+  React.useEffect(() => {
+    dispatch(getTournaments());
+  }, []);
 
   if (error)
     return (
@@ -41,8 +52,8 @@ const Tournaments = () => {
 
   return (
     <Wrapper>
-      {items.map((item: TTournament, i: number) => {
-        return <Tournament data={{ ...item }} key={i} />;
+      {items.map((item: typeTournament) => {
+        return <Tournament data={item} key={item.id} />;
       })}
     </Wrapper>
   );

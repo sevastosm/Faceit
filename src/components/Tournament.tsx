@@ -5,10 +5,10 @@ import {
   deleteTournamentAction,
   editTournamentAction,
 } from '../store/actions/tournaments';
-import theme from '../theme';
+import { Tournament as typeTournament, AppDispatch } from '../types';
 import Button from './Button';
 import H6 from './H6';
-// import { Tournament } from '../types';
+import theme from '../theme';
 
 const Item = styled.div`
   border-radius: ${theme.borderRadius};
@@ -28,11 +28,11 @@ const EditButton = styled(Button)`
   margin-right: ${theme.spacing(2)};
 `;
 
-// formating date
+type Props = { data: typeTournament };
 
-const Tournament = ({ data }: any) => {
+const Tournament: React.FC<Props> = ({ data }: Props) => {
   const { name, organizer, game, participants, startDate, id } = data;
-  const dispatch: any = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   const d = new Date(startDate).toLocaleString('en-GB');
 
@@ -43,7 +43,7 @@ const Tournament = ({ data }: any) => {
   };
 
   const handleEdit = () => {
-    let name: any = window.prompt('New Tournament Name');
+    const name = window.prompt('New Tournament Name');
     if (!name) return;
     dispatch(editTournamentAction(id, name));
   };

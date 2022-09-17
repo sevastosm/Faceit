@@ -1,53 +1,51 @@
+import { ApplicationStore, Tournament } from '../../types';
 import * as actionTypes from '../actions/actionTypes';
-// import * as models from "../../models";
-
-// interface Iaction extends models.IState {
-//   results: [models.ICharacter];
-//   type: string;
-//   payload: { results: models.ICharacter; info: models.Iinfo };
-// }
 
 const initialState = {
-  data: [],
-  loading: true,
+  items: [],
+  loading: false,
   errorInSearch: false,
   search: '',
 };
 
-const reducer = (state = initialState, action: any) => {
+const reducer = (
+  state = initialState,
+  action: { type: string; payload: any }
+) => {
   switch (action.type) {
     case actionTypes.FETCH_TOURNAMENTS_START:
       return {
         ...state,
-        loading: true,
-        errorInSearch: false,
+        loading: action.payload,
       };
     case actionTypes.FETCH_TOURNAMENTS_SUCCESS:
       return {
         ...state,
-        data: action.payload,
+        items: action.payload,
+        loading: false,
+        errorInSearch: false,
+      };
+    case actionTypes.SET_TOURNAMENTS:
+      return {
+        ...state,
+        items: action.payload,
         loading: false,
         errorInSearch: false,
       };
     case actionTypes.UPDATE_TOURNAMENT:
       return {
         ...state,
-        data: action.payload,
-        loading: false,
-        errorInSearch: false,
+        items: action.payload,
       };
     case actionTypes.DELETE_TOURNAMENT:
       return {
         ...state,
-        data: action.payload,
-        loading: false,
-        errorInSearch: false,
+        items: action.payload,
       };
     case actionTypes.FETCH_TOURNAMENTS_FAIL:
       return {
         ...state,
-        data: null,
-        errorInSearch: true,
+        errorInSearch: action.payload,
       };
     case actionTypes.SET_SEARCH:
       return {
