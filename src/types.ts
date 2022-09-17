@@ -11,7 +11,7 @@ export type Tournament = {
   organizer: string;
   game: string;
   participants: Participants;
-  startDate: Date;
+  startDate: string;
 };
 
 export type Participants = {

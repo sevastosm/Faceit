@@ -9,6 +9,7 @@ import { Tournament as typeTournament, AppDispatch } from '../types';
 import Button from './Button';
 import H6 from './H6';
 import theme from '../theme';
+import { formatDate } from '../utils';
 
 const Item = styled.div`
   border-radius: ${theme.borderRadius};
@@ -34,7 +35,7 @@ const Tournament: React.FC<Props> = ({ data }: Props) => {
   const { name, organizer, game, participants, startDate, id } = data;
   const dispatch: AppDispatch = useDispatch();
 
-  const d = new Date(startDate).toLocaleString('en-GB');
+  const date = formatDate(startDate);
 
   const handleClick = () => {
     if (window.confirm('Do you really want to delete this tournament?')) {
@@ -55,7 +56,7 @@ const Tournament: React.FC<Props> = ({ data }: Props) => {
       <Info>
         Participants:&nbsp;{participants.current}/{participants.max}
       </Info>
-      <Info>Start:&nbsp;{d}</Info>
+      <Info>Start:&nbsp;{date}</Info>
       <Actions>
         <EditButton onClick={handleEdit}>EDIT</EditButton>
         <Button onClick={handleClick}>DELETE</Button>
