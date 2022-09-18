@@ -44,7 +44,6 @@ export const setSearch = (search: string) => {
 export const getTournaments = (query: string = '') => {
   return async (dispatch: AppDispatch) => {
     dispatch(setSearch(query));
-
     dispatch(fetchTournamentsStart());
     fetchTournaments(query)
       .then((response) => {

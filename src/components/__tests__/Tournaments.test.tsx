@@ -1,113 +1,105 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import {
-  FETCH_TOURNAMENTS_FAIL,
-  FETCH_TOURNAMENTS_START,
-  FETCH_TOURNAMENTS_SUCCESS,
-} from '../../store/actions/actionTypes';
-import store from '../../store';
+import { render as renderWithRedux, screen } from '../../test-utils';
 import Tournaments from '../Tournaments';
-import App from '../../App';
 
 test('renders loading tournaments... message', () => {
-  act(() => {
-    store.dispatch({
-      type: FETCH_TOURNAMENTS_START,
-      payload: true,
-    });
+  const store: any = {
+    tournaments: {
+      items: [],
+      loading: true,
+      errorInSearch: false,
+      search: '',
+    },
+  };
+  renderWithRedux(<Tournaments />, {
+    initialState: store,
   });
-  render(
-    <Provider store={store}>
-      <Tournaments />
-    </Provider>
-  );
-  const input = screen.getByText(/Loading tournaments.../i);
-  expect(input).toBeInTheDocument();
+  const message = screen.getByText(/Loading tournaments.../i);
+  expect(message).toBeInTheDocument();
 });
 
 test('renders No tournaments found message', () => {
-  act(() => {
-    store.dispatch({
-      type: FETCH_TOURNAMENTS_SUCCESS,
-      payload: [],
-    });
+  const store: any = {
+    tournaments: {
+      items: [],
+      loading: false,
+      errorInSearch: false,
+      search: '',
+    },
+  };
+  renderWithRedux(<Tournaments />, {
+    initialState: store,
   });
-  render(
-    <Provider store={store}>
-      <Tournaments />
-    </Provider>
-  );
-  const input = screen.getByText(/Loading tournaments.../i);
-  expect(input).toBeInTheDocument();
+  const message = screen.getByText(/No tournaments found./i);
+  expect(message).toBeInTheDocument();
 });
 
-test('renders No tournaments found message', () => {
-  act(() => {
-    store.dispatch({
-      type: FETCH_TOURNAMENTS_FAIL,
-      payload: true,
-    });
+test('renders Something went wrong message', () => {
+  const store: any = {
+    tournaments: {
+      items: [],
+      loading: false,
+      errorInSearch: true,
+      search: '',
+    },
+  };
+  renderWithRedux(<Tournaments />, {
+    initialState: store,
   });
-  render(
-    <Provider store={store}>
-      <Tournaments />
-    </Provider>
-  );
-  const input = screen.getByText(/Something went wrong./i);
+  const message = screen.getByText(/Something went wrong./i);
   const rertyButton = screen.getByText(/Retry/i);
-
-  expect(input).toBeInTheDocument();
+  expect(message).toBeInTheDocument();
   expect(rertyButton).toBeInTheDocument();
 });
 
-test('renders tournaments list', async () => {
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
-
-  act(() => {
-    store.dispatch({
-      type: 'FETCH_TOURNAMENTS_SUCCESS',
-      payload: [
+test('renders tournaments list', () => {
+  const store: any = {
+    tournaments: {
+      items: [
         {
-          id: 'ffb37039-bf24-43f3-8dbf-d03bbcd86faa',
-          name: 'Test',
-          organizer: 'Sit',
-          game: 'League of Legends',
+          id: '42d8d918-8db6-4b4d-9f63-38c9071455bd',
+          name: 'Numquam Placeat Voluptatem',
+          organizer: 'Excepturi',
+          game: 'Counter-Strike: Global Offensive',
           participants: {
-            current: 76,
+            current: 104,
             max: 256,
           },
-          startDate: '2022-09-17T20:21:43.484Z',
+          startDate: '2022-09-18T10:30:40.222Z',
         },
         {
-          id: 'd0473a98-e795-4cac-b37e-6a74acf54fe2',
-          name: 'Minima Quo Ut',
-          organizer: 'Voluptates',
+          id: 'ebc4ae03-efcc-494e-b8d5-bf13d9d0d24c',
+          name: 'Ut Aut Quisquam Itaque',
+          organizer: 'Ut',
           game: 'League of Legends',
           participants: {
-            current: 46,
+            current: 27,
             max: 256,
           },
-          startDate: '2022-09-17T20:20:22.376Z',
+          startDate: '2022-09-18T10:30:40.220Z',
         },
         {
-          id: '184e266f-9b3f-4905-aae0-11db964a9247',
-          name: 'Quis Non Quibusdam Id',
-          organizer: 'Quaerat Tenetur',
-          game: 'Battalion 1944',
+          id: '987cc77b-9998-4da6-a0b8-3ce7dc2422a7',
+          name: 'Et Aut Harum Iusto',
+          organizer: 'Harum',
+          game: 'League of Legends',
           participants: {
-            current: 143,
+            current: 158,
             max: 256,
           },
-          startDate: '2022-09-17T20:20:22.376Z',
+          startDate: '2022-09-18T10:30:40.220Z',
         },
       ],
-    });
+      loading: false,
+      errorInSearch: false,
+      search: '',
+    },
+  };
+  renderWithRedux(<Tournaments />, {
+    initialState: store,
   });
   const tournamentsList = screen.getByTestId('TOURNAMENTS_LIST');
+  const items = screen.getAllByTestId('TOURNAMENT_ITEM');
   expect(tournamentsList).toBeInTheDocument();
+  expect(items.length) === store.tournaments.items;
 });

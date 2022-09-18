@@ -1,14 +1,18 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
+import { render as renderWithRedux, screen } from './test-utils';
 import App from './App';
-import store from './store';
 test('renders header correctly', async () => {
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
+  const store: any = {
+    tournaments: {
+      items: [],
+      loading: true,
+      errorInSearch: false,
+      search: '',
+    },
+  };
+  renderWithRedux(<App />, {
+    initialState: store,
+  });
   const h4 = screen.getByText(/FACEIT Tournaments/i);
   expect(h4).toBeInTheDocument();
 });

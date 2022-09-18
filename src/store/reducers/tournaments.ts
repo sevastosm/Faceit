@@ -1,7 +1,7 @@
 import { ApplicationStore, Tournament } from '../../types';
 import * as actionTypes from '../actions/actionTypes';
 
-const initialState = {
+export const initialState = {
   items: [],
   loading: false,
   errorInSearch: false,

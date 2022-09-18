@@ -49,7 +49,7 @@ const Tournament: React.FC<Props> = ({ data }: Props) => {
   };
 
   return (
-    <Item>
+    <Item data-testid="TOURNAMENT_ITEM">
       <H6>{name}</H6>
       <Info>Organizer:&nbsp;{organizer}</Info>
       <Info>Game:&nbsp;{game}</Info>
