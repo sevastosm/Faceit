@@ -35,9 +35,16 @@ export const fetchTournamentsFail = () => {
     payload: true,
   };
 };
-
+export const setSearch = (search: string) => {
+  return {
+    type: actionTypes.SET_SEARCH,
+    payload: search,
+  };
+};
 export const getTournaments = (query: string = '') => {
-  return (dispatch: AppDispatch) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(setSearch(query));
+
     dispatch(fetchTournamentsStart());
     fetchTournaments(query)
       .then((response) => {
@@ -58,13 +65,6 @@ export const newTournament = (name: string) => {
       .catch(() => {
         dispatch(fetchTournamentsFail());
       });
-  };
-};
-
-export const setSearch = (search: string) => {
-  return {
-    type: actionTypes.SET_SEARCH,
-    payload: search,
   };
 };
 

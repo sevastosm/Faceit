@@ -1,5 +1,6 @@
-export const fetchTournaments = (query: string) =>
-  fetch(`http://localhost:4000/tournaments?q=${query}`)
+import { API_TOURNAMENTS_URL } from '../constants/api';
+export const fetchTournaments = async (query: string) =>
+  fetch(`${API_TOURNAMENTS_URL}?q=${query}`)
     .then((response) => response.json())
     .then((data) => {
       return data;
@@ -9,8 +10,8 @@ export const fetchTournaments = (query: string) =>
     });
 
 export const createTournament = async (name: string) => {
-  await fetch('http://localhost:4000/tournaments', {
-    method: 'POST', // or 'PUT'
+  await fetch(API_TOURNAMENTS_URL, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -26,7 +27,7 @@ export const createTournament = async (name: string) => {
 };
 
 export const editTournament = async (id: string, name: string) => {
-  await fetch(`http://localhost:4000/tournaments/${id}`, {
+  await fetch(`${API_TOURNAMENTS_URL}/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -36,7 +37,7 @@ export const editTournament = async (id: string, name: string) => {
 };
 
 export const deleteTournament = async (id: string) => {
-  await fetch(`http://localhost:4000/tournaments/${id}`, {
+  await fetch(`${API_TOURNAMENTS_URL}/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

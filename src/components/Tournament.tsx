@@ -34,7 +34,6 @@ type Props = { data: typeTournament };
 const Tournament: React.FC<Props> = ({ data }: Props) => {
   const { name, organizer, game, participants, startDate, id } = data;
   const dispatch: AppDispatch = useDispatch();
-
   const date = formatDate(startDate);
 
   const handleClick = () => {
@@ -48,6 +47,7 @@ const Tournament: React.FC<Props> = ({ data }: Props) => {
     if (!name) return;
     dispatch(editTournamentAction(id, name));
   };
+
   return (
     <Item>
       <H6>{name}</H6>

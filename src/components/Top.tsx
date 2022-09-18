@@ -17,10 +17,8 @@ const TopAtions = styled.div`
 
 const Top: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     dispatch(getTournaments(e.target.value));
-
   const handleClick = () => {
     const name: string | null = window.prompt('New Tournament Name');
     if (!name) return;

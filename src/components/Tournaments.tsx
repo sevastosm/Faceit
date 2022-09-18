@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTournaments } from '../store/actions/tournaments';
-import { selectItems } from '../store/selectors/tournaments';
+import { selectItems, search } from '../store/selectors/tournaments';
 import {
   ApplicationStore,
   Tournament as typeTournament,
@@ -27,12 +27,14 @@ const NoResults = styled.div`
 const Tournaments: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const items = useSelector(selectItems);
+  const searchTerm = useSelector(search);
   const isLoading = useSelector(
     (store: ApplicationStore) => store.tournaments.loading
   );
   const error = useSelector(
     (store: ApplicationStore) => store.tournaments.errorInSearch
   );
+
   React.useEffect(() => {
     dispatch(getTournaments());
   }, []);
@@ -42,16 +44,18 @@ const Tournaments: React.FC = () => {
       <NoResults>
         Something went wrong.
         <NoResults>
-          <Button onClick={() => dispatch(getTournaments())}>Rerty</Button>
+          <Button onClick={() => dispatch(getTournaments(searchTerm))}>
+            Retry
+          </Button>
         </NoResults>
       </NoResults>
     );
-  if (isLoading) return <NoResults> Loading tournaments ...</NoResults>;
+  if (isLoading) return <NoResults>Loading tournaments...</NoResults>;
   if (items.length === 0 && !isLoading)
-    return <NoResults> No tournaments found.</NoResults>;
+    return <NoResults>No tournaments found.</NoResults>;
 
   return (
-    <Wrapper>
+    <Wrapper data-testid="TOURNAMENTS_LIST">
       {items.map((item: typeTournament) => {
         return <Tournament data={item} key={item.id} />;
       })}
