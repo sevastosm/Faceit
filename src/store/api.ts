@@ -1,29 +1,29 @@
 import { API_TOURNAMENTS_URL } from '../constants/api';
-export const fetchTournaments = async (query: string) =>
-  fetch(`${API_TOURNAMENTS_URL}?q=${query}`)
-    .then((response) => response.json())
-    .then((data) => {
-      return data;
-    })
-    .catch((error) => {
-      return error;
-    });
+
+export const fetchTournaments = async (query: string) => {
+  try {
+    let response = await fetch(`${API_TOURNAMENTS_URL}?q=${query}`);
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const createTournament = async (name: string) => {
-  await fetch(API_TOURNAMENTS_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name: name }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      return data;
-    })
-    .catch((error) => {
-      return error;
+  try {
+    let response = await fetch(API_TOURNAMENTS_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: name }),
     });
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
 export const editTournament = async (id: string, name: string) => {

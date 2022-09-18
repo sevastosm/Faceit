@@ -7,7 +7,6 @@ import Input from './Input';
 import theme from '../theme';
 import styled from 'styled-components';
 const TopAtions = styled.div`
-  max-width: 960px;
   margin-top: ${theme.spacing(6)};
   margin-left: auto;
   margin-right: auto;
@@ -20,7 +19,7 @@ const Top: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     dispatch(getTournaments(e.target.value));
   const handleClick = () => {
-    const name: string | null = window.prompt('New Tournament Name');
+    const name: string | null = window.prompt('Tournament Name:');
     if (!name) return;
     dispatch(newTournament(name));
   };

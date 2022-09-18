@@ -1,4 +1,3 @@
-import { ApplicationStore, Tournament } from '../../types';
 import * as actionTypes from '../actions/actionTypes';
 
 export const initialState = {

@@ -42,7 +42,7 @@ export const setSearch = (search: string) => {
   };
 };
 export const getTournaments = (query: string = '') => {
-  return async (dispatch: AppDispatch) => {
+  return (dispatch: AppDispatch) => {
     dispatch(setSearch(query));
     dispatch(fetchTournamentsStart());
     fetchTournaments(query)
@@ -70,10 +70,10 @@ export const newTournament = (name: string) => {
 export const optimisticDeletetournament = (id: string) => {
   const tournaments = store.getState().tournaments.items;
 
-  const f = tournaments.filter((d: Tournament) => d.id !== id);
+  const filtered = tournaments.filter((d: Tournament) => d.id !== id);
   return {
     type: actionTypes.DELETE_TOURNAMENT,
-    payload: f,
+    payload: filtered,
   };
 };
 

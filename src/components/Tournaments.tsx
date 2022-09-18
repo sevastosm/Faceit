@@ -14,7 +14,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(${theme.spacing(70)}, 1fr));
   gap: ${theme.spacing(6)};
   margin-top: ${theme.spacing(6)};
 `;
@@ -45,7 +45,7 @@ const Tournaments: React.FC = () => {
         Something went wrong.
         <NoResults>
           <Button onClick={() => dispatch(getTournaments(searchTerm))}>
-            Retry
+            RETRY
           </Button>
         </NoResults>
       </NoResults>

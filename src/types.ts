@@ -2,8 +2,6 @@ import store from './store';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 
-export type Nullable<T> = T | null | undefined;
-export type ValueOf<T> = T[keyof T];
 export type Tournament = {
   id: string;
   name: string;

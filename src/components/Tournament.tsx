@@ -43,9 +43,9 @@ const Tournament: React.FC<Props> = ({ data }: Props) => {
   };
 
   const handleEdit = () => {
-    const name = window.prompt('New Tournament Name');
-    if (!name) return;
-    dispatch(editTournamentAction(id, name));
+    const namePromp = window.prompt('New Tournament Name:', name);
+    if (namePromp === name || !namePromp) return;
+    dispatch(editTournamentAction(id, namePromp));
   };
 
   return (
