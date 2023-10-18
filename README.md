@@ -1,4 +1,4 @@
-# Game tournaments app it app
+# Game tournaments app.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and has addtional libraries included:
 
